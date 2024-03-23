@@ -1,8 +1,7 @@
-import { ActionPanel, Action, List, openExtensionPreferences, Icon } from "@raycast/api";
-import { useFetch, Response } from "@raycast/utils";
+import { ActionPanel, Action, List } from "@raycast/api";
+import { useFetch } from "@raycast/utils";
 import { useState } from "react";
 import { URLSearchParams } from "node:url";
-import { OFFICIAL_ENTE_AUTH_WEB_URL } from "./constants.js";
 
 export default function Command() {
   const [searchText, setSearchText] = useState("");
@@ -38,15 +37,7 @@ function SearchListItem({ searchResult }: { searchResult: SearchResult }) {
       actions={
         <ActionPanel>
           <ActionPanel.Section>
-            <Action.OpenInBrowser title="Open Ente Auth Web in Browser" url={OFFICIAL_ENTE_AUTH_WEB_URL} />
-          </ActionPanel.Section>
-          <ActionPanel.Section>
-            <Action
-              title="Open extension preferences"
-              icon={Icon.Gear}
-              shortcut={{ modifiers: ["cmd"], key: "," }}
-              onAction={openExtensionPreferences}
-            />
+            <Action.CopyToClipboard title="Copy OTP code" content={`${searchResult.name}`} />
           </ActionPanel.Section>
         </ActionPanel>
       }

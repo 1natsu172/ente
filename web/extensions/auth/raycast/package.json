@@ -14,9 +14,16 @@
   "license": "MIT",
   "commands": [
     {
-      "name": "index",
+      "name": "command-searchOtp",
       "title": "Search OTP",
       "subtitle": "ente auth",
+      "description": "Search registered OTP from ente auth",
+      "mode": "view"
+    },
+    {
+      "name": "index",
+      "title": "demo",
+      "subtitle": "ente auth demo",
       "description": "Search registered OTP from ente auth",
       "mode": "view"
     }
