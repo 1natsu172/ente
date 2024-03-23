@@ -15,16 +15,34 @@
   "commands": [
     {
       "name": "index",
-      "title": "Show Typeahead Results",
-      "description": "Template for showing typeahead search with network results.",
+      "title": "Search OTP",
+      "subtitle": "ente auth",
+      "description": "Search registered OTP from ente auth",
       "mode": "view"
+    }
+  ],
+  "preferences": [
+    {
+      "type": "textfield",
+      "name": "email",
+      "title": "Email",
+      "description": "your ente account email",
+      "required": true
+    },
+    {
+      "type": "password",
+      "name": "password",
+      "title": "Password",
+      "description": "your ente account password",
+      "required": true
     }
   ],
   "dependencies": {
     "@raycast/api": "^1.69.0",
     "@raycast/utils": "^1.4.8",
     "@ente/accounts": "*",
-    "@ente/shared": "*"
+    "@ente/shared": "*",
+    "@ente/types": "file:../../../apps/auth/src/types"
   },
   "devDependencies": {
     "@ente/eslint-config": "*",
