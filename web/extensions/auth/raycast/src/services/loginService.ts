@@ -1,40 +1,30 @@
-export const useLogin = (): {
-  isLoggedIn: boolean;
-  isLoggedInChecking: boolean;
-} => {
-  // useEffect(() => {
-  //   async function checkData() {
-  //     const services = await checkIfCached(SERVICES_KEY);
-  //     const apps = await checkIfCached(APPS_KEY);
-  //     setLogin(services || apps);
-  //   }
+import { addLocalLog } from "@ente/shared/logging/index.js";
+import { APPS } from "@ente/shared/apps/constants.js";
+import { getSRPAttributes } from "@ente/accounts/api/srp.js";
+import { sendOtt } from "@ente/accounts/api/user.js";
+import { PAGES } from "@ente/accounts/constants/pages.js";
+import { LS_KEYS, setData } from "./storageService/index.js";
 
-  //   checkData();
-  // }, []);
+export const loginUser = async (email: string): Promise<{ nextAction: PAGES }> => {
+  try {
+    // setData(LS_KEYS.USER, { email });
+    const srpAttributes = await getSRPAttributes(email);
+    addLocalLog(() => ` srpAttributes: ${JSON.stringify(srpAttributes)}`);
 
-  // useEffect(() => {
-  //   // remove cached values if Authy Id has been changed
-  //   async function invalidateCache() {
-  //     const isExist = await checkIfCached(AUTHY_ID);
-  //     if (isExist) {
-  //       const { authyId } = getPreferenceValues<{ authyId: string }>();
-  //       const cachedId = await getFromCache<string>(AUTHY_ID);
-  //       if (authyId != cachedId) {
-  //         await removeFromCache(SECRET_SEED);
-  //         await removeFromCache(DEVICE_ID);
-  //         await removeFromCache(SERVICES_KEY);
-  //         await removeFromCache(APPS_KEY);
-  //         await removeFromCache(REQUEST_ID);
-  //         setLogin(false);
-  //       }
-  //     }
-  //   }
-
-  //   invalidateCache();
-  // });
-
-  return {
-    isLoggedIn: false,
-    isLoggedInChecking: false,
-  };
+    if (!srpAttributes || srpAttributes.isEmailMFAEnabled) {
+      await sendOtt(APPS.AUTH, email);
+      // route to mfa
+      return { nextAction: PAGES.VERIFY };
+    } else {
+      await setData(LS_KEYS.SRP_ATTRIBUTES, srpAttributes);
+      // route to cred
+      return { nextAction: PAGES.CREDENTIALS };
+    }
+  } catch (e) {
+    if (e instanceof Error) {
+      throw Error(`UNKNOWN_ERROR (reason:${e.message})`);
+    } else {
+      throw Error(`UNKNOWN_ERROR (reason:${JSON.stringify(e)})`);
+    }
+  }
 };
