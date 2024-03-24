@@ -1,7 +1,6 @@
 import { Action, ActionPanel, Form, useNavigation } from "@raycast/api";
 import { useForm } from "@raycast/utils";
 import { MfaForm } from "./MfaForm.js";
-import { useEmail } from "../../hooks/accountHooks/index.js";
 
 export const EmailForm = () => {
   const { push } = useNavigation();
@@ -10,7 +9,6 @@ export const EmailForm = () => {
       push(<MfaForm />);
     },
   });
-  const { email } = useEmail();
 
   return (
     <Form
@@ -20,7 +18,7 @@ export const EmailForm = () => {
         </ActionPanel>
       }
     >
-      <Form.TextField id="email" title="Email" placeholder="your@domain.com" defaultValue={email} storeValue={true} />
+      <Form.TextField id="email" title="Email" placeholder="your@domain.com" storeValue={true} />
     </Form>
   );
 };
