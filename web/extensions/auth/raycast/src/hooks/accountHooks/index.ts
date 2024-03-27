@@ -1,9 +1,18 @@
+import { usePromise } from "@raycast/utils";
+import { LS_KEYS } from "@ente/shared/storage/localStorage/index.js";
+import { User } from "@ente/shared/user/types.js";
+import { getData } from "../../services/storageService/index.js";
 // import { getEmail } from "../../services/storageService/helper.js";
 
 // export const useToken = () => {
 //   const email = use(getEmail);
 //   return { email };
 // };
+
+export const useUser = () => {
+  const user = usePromise(async () => await getData<User>(LS_KEYS.USER));
+  return user;
+};
 
 export const useLogin = (): {
   isLoggedIn: boolean;

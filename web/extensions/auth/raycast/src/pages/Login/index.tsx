@@ -1,5 +1,5 @@
-import { EmailForm } from "../../components/LoginForm/EmailForm.js";
+import { LoginForm } from "../../components/LoginForm/index.js";
 
 export const Login = () => {
-  return <EmailForm></EmailForm>;
+  return <LoginForm></LoginForm>;
 };
